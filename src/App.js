@@ -40,7 +40,7 @@ class App extends Component {
 		});
 
 		//音声認識APIの使用
-		this.speech = new webkitSpeechRecognition();
+		this.speech = new window.webkitSpeechRecognition();
 		this.speech.lang = "ja";
 		this.speech.continuous = true;
 		this.speech.addEventListener('result' , function(e) {
