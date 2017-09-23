@@ -8,7 +8,6 @@ import VideoArea from './VideoArea.js'
 import { Grid, Col, Row } from 'react-bootstrap';
 
 class App extends Component {
-
 	componentWillMount() {
 		this.localStream = null;
 		this.peer = null;
@@ -36,10 +35,13 @@ class App extends Component {
 					"id": this.peer.id,
 					"stream": stream
 				});
+				this.setState({videos: this.videos})
+				this.localStream = stream
 			}).catch(function (error) {
 				console.error('mediaDevice.getUserMedia() error:', error);
 				return;
 			});
+		
 
 		//音声認識APIの使用
 		this.speech = new window.webkitSpeechRecognition();
@@ -54,16 +56,21 @@ class App extends Component {
 		//		if (!this.call) {
 		//			this.call.close();
 		//		}
+		this.setState({videos: []});
 
 		this.peer.on('open', () => {
 			this.call = this.peer.joinRoom("test", { "mode": 'sfu', "stream": this.localStream });
 
-			this.call.on('stream', function (stream) {
+			console.log(this)
+			this.call.on('stream', (stream) => {
+				console.log(this)
 				this.videos.push({
 					"id": stream.peerId,
 					"stream": stream
 				});
+				this.setState({videos: this.videos})
 			});
+			
 
 			//room.send();
 
@@ -90,10 +97,9 @@ class App extends Component {
 	}
 
 	render() {
-		
 		return (
 			<div className="App">
-				<VideoArea videos={this.videos} />
+				<VideoArea videos={this.state.videos} />
 				<div>
 					<Grid>
 						<Row className="show-grid">
