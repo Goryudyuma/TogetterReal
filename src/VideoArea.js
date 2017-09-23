@@ -4,13 +4,11 @@ import './App.css';
 
 import { Grid, Col, Row } from 'react-bootstrap';
 
-class Video extends Component {
+class VideoOne extends Component {
 	render() {
 		return (
-			<div className="Video">
-
-			</div>
-		)
+			<video srcObject={this.props.video} autoplay />
+		);
 	}
 }
 
@@ -24,7 +22,7 @@ class VideoArea extends Component {
 					<Col xs={6}>
 						{
 							this.props.videos.map(
-								video => <Video video={video} />
+								video => <VideoOne video={video} />
 							)
 						}
 					</Col>
