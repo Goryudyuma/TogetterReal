@@ -22,6 +22,7 @@ class App extends Component {
 		this.constraints.video.width = 320;
 		this.constraints.video.height = 240;
 
+		// メディアの取得
 		navigator.mediaDevices.getUserMedia(this.constraints)
 			.then(function (stream) {
 				this.videos.push({
@@ -32,18 +33,57 @@ class App extends Component {
 				console.error('mediaDevice.getUserMedia() error:', error);
 				return;
 			});
-
+		
+		// インスタンス化
 		this.peer = new Peer({
 			key: '4e91c06c-3d91-409e-8f45-faaa291227f5',
 			debug: 2
 		});
 
-		this.peer.on('stream', function(stream){
+		//音声認識APIの使用
+		this.speech = new webkitSpeechRecognition();
+		this.speech.lang = "ja";
+		this.speech.continuous = true;
+		this.speech.addEventListener('result' , function(e) {
+			console.log("認識: "+e.results[0][0].transcript);
+		});
+		this.recognition.start();
+
+		// ルームに参加
+		if(this.call){
+			this.call.close();
+		}
+		this.call = this.peer.joinRoom("test", {"mode": 'sfu', "stream": this.localStream});
+
+        call.on('stream', function(stream){
 			this.videos.push({
 				"id": stream.peerId,
 				"stream": stream
 			});
 		});
+		//room.send();
+
+        call.on('data', function(data){
+			data.src
+			data.data
+			/*
+			this.videos.push({
+				"id": stream.peerId,
+				"stream": stream
+			});
+			*/
+		});
+		
+
+        call.on('peerLeave', function(peerId){
+            //removeVideo(peerId);
+        });
+
+        call.on('close', function(){
+            //removeAllRemoteVideos();
+            //setupMakeCallUI();
+        });
+
 
 	}
 
