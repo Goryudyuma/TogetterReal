@@ -9,7 +9,7 @@ import { Grid, Col, Row } from 'react-bootstrap';
 
 class App extends Component {
 	
-	componentDidMount() {
+	componentWillMount() {
 		this.localStream = null;
 		this.peer = null;
 		this.existingCall = null;
@@ -33,7 +33,7 @@ class App extends Component {
 				return;
 			});
 
-		this.peer = new Peer({
+		this.peer = new window.Peer({
 			key: '4e91c06c-3d91-409e-8f45-faaa291227f5',
 			debug: 2
 		});
@@ -44,7 +44,6 @@ class App extends Component {
 				"stream": stream
 			});
 		});
-
 	}
 
 	render() {
