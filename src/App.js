@@ -46,7 +46,7 @@ class App extends Component {
 		this.speech.addEventListener('result' , function(e) {
 			console.log("認識: "+e.results[0][0].transcript);
 		});
-		this.recognition.start();
+		//this.recognition.start();
 
 		// ルームに参加
 		if(this.call){
@@ -54,7 +54,7 @@ class App extends Component {
 		}
 		this.call = this.peer.joinRoom("test", {"mode": 'sfu', "stream": this.localStream});
 
-        call.on('stream', function(stream){
+        this.call.on('stream', function(stream){
 			this.videos.push({
 				"id": stream.peerId,
 				"stream": stream
@@ -63,7 +63,7 @@ class App extends Component {
 		
 		//room.send();
 
-        call.on('data', function(data){
+        this.call.on('data', function(data){
 			data.src
 			data.data
 			/*
@@ -75,11 +75,11 @@ class App extends Component {
 		});
 		
 
-        call.on('peerLeave', function(peerId){
+        this.call.on('peerLeave', function(peerId){
             //removeVideo(peerId);
         });
 
-        call.on('close', function(){
+        this.call.on('close', function(){
             //removeAllRemoteVideos();
             //setupMakeCallUI();
         });
